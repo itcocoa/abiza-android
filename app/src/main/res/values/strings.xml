@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">abiza-android</string>
+    <string name="project_name">abiza-android</string>
+    <string name="app_name">Abiza</string>
+    <string name="app_name_cn">亚商圈</string>
 </resources>
