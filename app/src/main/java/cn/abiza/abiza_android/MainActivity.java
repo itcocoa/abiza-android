@@ -5,7 +5,7 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-
+import cn.abiza.abiza_android.service.*;
 import java.net.HttpURLConnection;
 
 public class MainActivity extends AppCompatActivity
@@ -44,6 +44,8 @@ public class MainActivity extends AppCompatActivity
         System.out.println("我被点击了！");
         // 这里开始验证用户名密码
 
+        Tools tool = new Tools();
+        tool.exec("User","login","");
     }
 
     private boolean islogined(){
