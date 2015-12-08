@@ -4,9 +4,12 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 
-public class MainActivity extends AppCompatActivity {
+import java.net.HttpURLConnection;
 
+public class MainActivity extends AppCompatActivity
+{
     Handler MainHandler;
 
     @Override
@@ -33,6 +36,13 @@ public class MainActivity extends AppCompatActivity {
 
         CountThread count_thd = new CountThread();
         count_thd.start();
+
+    }
+
+    public void login(View view)
+    {
+        System.out.println("我被点击了！");
+        // 这里开始验证用户名密码
 
     }
 
