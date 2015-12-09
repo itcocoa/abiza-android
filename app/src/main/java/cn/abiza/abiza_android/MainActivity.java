@@ -5,8 +5,9 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
+
 import cn.abiza.abiza_android.service.*;
-import java.net.HttpURLConnection;
 import org.json.*;
 
 public class MainActivity extends AppCompatActivity
@@ -29,6 +30,11 @@ public class MainActivity extends AppCompatActivity
                         setContentView(R.layout.login);
                     }
                 }
+
+                if ((String)msg.obj == "exe_api_User_service_login") {
+                    TextView textView6 = (TextView)findViewById(R.id.textView6);
+                    textView6.setText("哈哈");
+                }
             }
 
         };
@@ -40,17 +46,17 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    public void login(View view) throws JSONException {
+    public void login(View view) throws Exception {
         System.out.println("我被点击了！");
         // 这里开始验证用户名密码
 
-        Tools tool = new Tools();
+        Tools tool = new Tools(MainHandler);
         JSONObject data = tool.exec("User","login","");
 
 
-        String t = data.getJSONObject("data").getString("username");
+        //String t = data.getJSONObject("data").getString("username");
 
-        System.out.println(t);
+        //System.out.println(t);
 
     }
 
