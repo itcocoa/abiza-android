@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import cn.abiza.abiza_android.service.*;
 import java.net.HttpURLConnection;
+import org.json.*;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -39,13 +40,18 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    public void login(View view)
-    {
+    public void login(View view) throws JSONException {
         System.out.println("我被点击了！");
         // 这里开始验证用户名密码
 
         Tools tool = new Tools();
-        tool.exec("User","login","");
+        JSONObject data = tool.exec("User","login","");
+
+
+        String t = data.getJSONObject("data").getString("username");
+
+        System.out.println(t);
+
     }
 
     private boolean islogined(){
