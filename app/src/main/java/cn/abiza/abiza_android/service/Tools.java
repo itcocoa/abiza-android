@@ -14,7 +14,7 @@ import org.json.*;
  */
 public class Tools {
     // 执行远程API，并返回数据
-    public JSONObject exec(String api, String service, Object params,Handler MainHandler,BackCall backCall) throws Exception {
+    public JSONObject exec(String api, String service, Object params,Handler MainHandler,UIProccessor backCall) throws Exception {
 
         execute execute_thd = new execute(api, service, params,MainHandler,backCall);
         execute_thd.start();
@@ -32,9 +32,9 @@ public class Tools {
         private String service;
         private Object params;
         private Handler MainHandler;
-        private BackCall backCall;
+        private UIProccessor backCall;
 
-        public execute(String api, String service, Object params,Handler MainHandler,BackCall backCall){
+        public execute(String api, String service, Object params,Handler MainHandler,UIProccessor backCall){
             this.api = api;
             this.service = service;
             this.params = params;
@@ -52,12 +52,15 @@ public class Tools {
 
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
-                conn.setRequestProperty("Authorization", "Basic " + encode( "admin:adminpass"));
+                conn.setRequestProperty("Authorization", "Basic " + encode("admin:adminpass"));
                 int code = conn.getResponseCode();
                 System.out.println(code);
                 Scanner scanner = new Scanner(conn.getInputStream());
                 String data = scanner.useDelimiter("\\A").next();
                 System.out.println(data);
+
+                JSONObject jdata = new JSONObject(data);
+                backCall.data = jdata;
 
                 Message toMain = MainHandler.obtainMessage();
                 toMain.obj = backCall;

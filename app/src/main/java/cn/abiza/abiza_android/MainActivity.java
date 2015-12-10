@@ -27,8 +27,8 @@ public class MainActivity extends AppCompatActivity
             public void handleMessage( Message msg) {
 
 
-                if (msg.obj instanceof BackCall){
-                    ((BackCall) msg.obj).ss();
+                if (msg.obj instanceof UIProccessor){
+                    ((UIProccessor) msg.obj).proc();
                 }else{
                     if ((String)msg.obj == "welcome_end"){
                         if (islogined()){
@@ -56,10 +56,10 @@ public class MainActivity extends AppCompatActivity
         final TextView textView6 = (TextView)findViewById(R.id.textView6);
         textView6.setText("我被点击了！");
         Tools tool = new Tools();
-        JSONObject data = tool.exec("User","login","",this.MainHandler,new BackCall(){
+        JSONObject data = tool.exec("User","login","",this.MainHandler,new UIProccessor(){
             @Override
-            public void ss(){
-                textView6.setText("=====");
+            public void onDataloaded(JSONObject data){
+                textView6.setText(data.toString());
             }
         });
 
