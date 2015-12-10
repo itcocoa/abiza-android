@@ -1,9 +1,11 @@
 package cn.abiza.abiza_android;
 
+import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -23,17 +25,18 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void handleMessage( Message msg) {
-                if ((String)msg.obj == "welcome_end"){
-                    if (islogined()){
-                        setContentView(R.layout.activity_main);
-                    }else{
-                        setContentView(R.layout.login);
-                    }
-                }
 
-                if ((String)msg.obj == "exe_api_User_service_login") {
-                    TextView textView6 = (TextView)findViewById(R.id.textView6);
-                    textView6.setText("哈哈");
+
+                if (msg.obj instanceof BackCall){
+                    ((BackCall) msg.obj).ss();
+                }else{
+                    if ((String)msg.obj == "welcome_end"){
+                        if (islogined()){
+                            setContentView(R.layout.activity_main);
+                        }else{
+                            setContentView(R.layout.login);
+                        }
+                    }
                 }
             }
 
@@ -50,8 +53,15 @@ public class MainActivity extends AppCompatActivity
         System.out.println("我被点击了！");
         // 这里开始验证用户名密码
 
-        Tools tool = new Tools(MainHandler);
-        JSONObject data = tool.exec("User","login","");
+        final TextView textView6 = (TextView)findViewById(R.id.textView6);
+        textView6.setText("我被点击了！");
+        Tools tool = new Tools();
+        JSONObject data = tool.exec("User","login","",this.MainHandler,new BackCall(){
+            @Override
+            public void ss(){
+                textView6.setText("=====");
+            }
+        });
 
 
         //String t = data.getJSONObject("data").getString("username");
