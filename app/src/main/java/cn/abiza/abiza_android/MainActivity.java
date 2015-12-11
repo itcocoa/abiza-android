@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onDataloaded(JSONObject data){
                 try {
-                    if ((String)data.getString("type") == "error"){
+                    if (data.getString("type").equals("error")){
                         textView6.setText("登录失败"+data.getString("type"));
                     }else{
                         textView6.setText("登录成功"+data.getString("type"));
