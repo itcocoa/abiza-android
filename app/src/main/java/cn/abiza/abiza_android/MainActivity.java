@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import cn.abiza.abiza_android.service.*;
@@ -56,10 +57,26 @@ public class MainActivity extends AppCompatActivity
         final TextView textView6 = (TextView)findViewById(R.id.textView6);
         textView6.setText("我被点击了！");
         Tools tool = new Tools();
-        JSONObject data = tool.exec("User","login","",this.MainHandler,new UIProccessor(){
+
+        EditText editText = (EditText)findViewById(R.id.editText);
+        EditText editText2 = (EditText)findViewById(R.id.editText2);
+        JSONObject user_data = new JSONObject();
+        user_data.put("username", editText.getText());
+        user_data.put("password",MD5Util.string2MD5(editText2.getText().toString()));
+
+        tool.exec("User","login",user_data,this.MainHandler,new UIProccessor(){
             @Override
             public void onDataloaded(JSONObject data){
-                textView6.setText(data.toString());
+                try {
+                    if ((String)data.getString("type") == "error"){
+                        textView6.setText("登录失败"+data.getString("type"));
+                    }else{
+                        textView6.setText("登录成功"+data.getString("type"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
             }
         });
 

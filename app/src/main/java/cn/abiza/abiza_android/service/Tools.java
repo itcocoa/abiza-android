@@ -14,27 +14,22 @@ import org.json.*;
  */
 public class Tools {
     // 执行远程API，并返回数据
-    public JSONObject exec(String api, String service, Object params,Handler MainHandler,UIProccessor backCall) throws Exception {
+    public void exec(String api, String service, JSONObject params,Handler MainHandler,UIProccessor backCall) throws Exception {
 
         execute execute_thd = new execute(api, service, params,MainHandler,backCall);
         execute_thd.start();
 
-        JSONObject rs = null;
-
-        //System.out.println(data);
-
-        return rs;
     }
 
     private class execute extends Thread
     {
         private String api;
         private String service;
-        private Object params;
+        private JSONObject params;
         private Handler MainHandler;
         private UIProccessor backCall;
 
-        public execute(String api, String service, Object params,Handler MainHandler,UIProccessor backCall){
+        public execute(String api, String service, JSONObject params,Handler MainHandler,UIProccessor backCall){
             this.api = api;
             this.service = service;
             this.params = params;
@@ -53,6 +48,24 @@ public class Tools {
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
                 conn.setRequestProperty("Authorization", "Basic " + encode("admin:adminpass"));
+
+                conn.setDoOutput(true);// 是否输入参数
+
+                StringBuffer params_form = new StringBuffer();
+
+                JSONArray names = params.names();
+                for (int i = 0;i < names.length(); ++i){
+
+                    System.out.println(names.getString(i) + ":" + params.getString(names.getString(i)));
+
+                    if (i!=0) params_form.append("&");
+                    params_form.append(names.getString(i)).append("=").append(params.getString(names.getString(i)));
+
+                }
+
+                byte[] bypes = params_form.toString().getBytes();
+                conn.getOutputStream().write(bypes);// 输入参数
+
                 int code = conn.getResponseCode();
                 System.out.println(code);
                 Scanner scanner = new Scanner(conn.getInputStream());
